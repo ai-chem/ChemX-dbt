@@ -25,7 +25,7 @@ SELECT
     concentration,
     test,
     test_indicator,
-    "viability_%", -- Используем кавычки из-за специального символа
+    viability_percent,
     doi,
     article_list,
     core_nm,

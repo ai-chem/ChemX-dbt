@@ -66,7 +66,7 @@ select
     cell.cell_age,
     cell.cell_type,
     cell.is_human,
-    fact."viability_%"
+    fact.viability_percent
 
 from fact
 left join np on fact.nanoparticle_id = np.nanoparticle_id

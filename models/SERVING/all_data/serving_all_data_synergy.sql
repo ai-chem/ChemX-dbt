@@ -70,7 +70,7 @@ select
     fact.np_concentration_µg_ml,
     fact.combined_mic,
     fact.peptide_mic,
-    fact."viability_%",
+    fact.viability_percent,
     fact.viability_error,
     fact.time_hr
 

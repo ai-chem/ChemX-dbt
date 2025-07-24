@@ -68,7 +68,7 @@ select
     fact.effect,
     fact.combined_mic,
     fact.peptide_mic,
-    fact."viability_%",
+    fact.viability_percent,
     fact.viability_error,
 
     bact.bacteria,

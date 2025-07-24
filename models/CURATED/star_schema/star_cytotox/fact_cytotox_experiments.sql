@@ -49,7 +49,7 @@ select
     final_cur_cytotox.concentration,
     final_cur_cytotox.test,
     final_cur_cytotox.test_indicator,
-    final_cur_cytotox."viability_%"
+    final_cur_cytotox.viability_percent
 
 from {{ ref('final_cur_cytotox') }} as final_cur_cytotox
 

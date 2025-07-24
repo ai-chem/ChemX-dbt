@@ -64,7 +64,7 @@ select
     fact.concentration,
     fact.test,
     fact.test_indicator,
-    fact."viability_%"
+    fact.viability_percent
 
 from {{ ref('fact_cytotox_experiments') }} as fact
 

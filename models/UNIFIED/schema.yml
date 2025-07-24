@@ -330,7 +330,7 @@ sources:
           - name: test_indicator
             description: "Reagent measured (e.g., TetrazoliumSalt for MTT)"
 
-          - name: "viability_%"
+          - name: "viability_percent"
             description: "Cell viability percentage relative to control"
 
           - name: doi
@@ -945,7 +945,7 @@ sources:
           - name: peptide_mic
             description: "MIC value of peptide alone"
 
-          - name: "viability_%"
+          - name: "viability_percent"
             description: "Viability of bacterial sample"
 
           - name: viability_error

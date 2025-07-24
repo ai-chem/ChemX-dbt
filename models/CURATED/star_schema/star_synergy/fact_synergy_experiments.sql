@@ -57,7 +57,7 @@ select
     final_cur_synergy.np_concentration_µg_ml,
     final_cur_synergy.combined_mic,
     final_cur_synergy.peptide_mic,
-    final_cur_synergy."viability_%",
+    final_cur_synergy.viability_percent,
     final_cur_synergy.viability_error,
     final_cur_synergy.time_hr
 
