@@ -1,10 +1,10 @@
 {{ config(materialized='table', schema='serving') }}
 
-{% set columns = adapter.get_columns_in_relation(ref('serving_all_data_seltox')) %}
+{% set columns = adapter.get_columns_in_relation(ref('serving_all_data_synergy')) %}
 {% set total_columns = columns | length %}
 
 with base as (
-    select * from {{ ref('serving_all_data_seltox') }}
+    select * from {{ ref('serving_all_data_synergy') }}
 ),
 row_completeness as (
     select

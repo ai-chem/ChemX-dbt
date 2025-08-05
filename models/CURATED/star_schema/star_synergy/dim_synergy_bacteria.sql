@@ -12,15 +12,17 @@ with unique_bacteria as (
     select distinct
         bacteria,
         strain,
-        mdr
+        mdr,
+        is_mdr
     from {{ ref('final_cur_synergy') }}
 )
 
 select
     row_number() over (
-        order by bacteria, strain, mdr
+        order by bacteria, strain, mdr, is_mdr
     ) as bacteria_id,
     bacteria,
     strain,
-    mdr
+    mdr,
+    is_mdr
 from unique_bacteria
