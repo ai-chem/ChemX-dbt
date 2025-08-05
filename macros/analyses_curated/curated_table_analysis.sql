@@ -42,7 +42,7 @@ SELECT
 FROM {{ relation }}
 {% endmacro %}
 
---____________3  column_stats_____________________
+--____________3  cur_column_stats_____________________
 
 {% macro cur_column_stats(model_name) %}
 {% set relation = ref(model_name) %}
@@ -59,8 +59,8 @@ SELECT
     '{{ column.name }}' AS column_name,
     '{{ column.data_type }}' AS data_type,
     base_counts.total_rows AS total_rows,
-    SUM(CASE WHEN {{ column.name }} IS NULL THEN 1 ELSE 0 END) AS null_count,
-    ROUND(100.0 * SUM(CASE WHEN {{ column.name }} IS NULL THEN 1 ELSE 0 END) / base_counts.total_rows, 2) AS null_percentage
+    SUM(CASE WHEN "{{ column.name }}" IS NULL THEN 1 ELSE 0 END) AS null_count,
+    ROUND(100.0 * SUM(CASE WHEN "{{ column.name }}" IS NULL THEN 1 ELSE 0 END) / base_counts.total_rows, 2) AS null_percentage
 FROM
     {{ relation }},
     base_counts

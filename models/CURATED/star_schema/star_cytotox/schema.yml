@@ -1,0 +1,176 @@
+version: 2
+
+models:
+  - name: dim_cytotox_cell_line
+    description: |
+      Справочник клеточных линий для экспериментов по цитотоксичности.
+      Каждая строка — уникальная клеточная линия, определяемая по типу, источнику, ткани, морфологии, возрасту и происхождению (человек/животное).
+      Используется для связи с факт-таблицей через cell_line_id.
+    columns:
+      - name: cell_line_id
+        description: "Уникальный surrogate key для клеточной линии."
+        tests:
+          - unique
+          - not_null
+      - name: canonical_cell_line_name
+        description: "Каноническое имя клеточной линии (для join-ов)."
+      - name: cell_type
+        description: "Тип клеточной линии."
+      - name: human_animal
+        description: "Происхождение: человек или животное."
+      - name: cell_source
+        description: "Источник клеток (вид, орган)."
+      - name: cell_tissue
+        description: "Ткань происхождения."
+      - name: cell_morphology
+        description: "Морфология клеток."
+      - name: cell_age
+        description: "Возраст клеток."
+      - name: is_human
+        description: "Булевый признак: Human - true, Animal - false."
+
+  - name: dim_cytotox_nanoparticle
+    description: |
+      Справочник уникальных наночастиц для cytotox (по nanoparticle_list).
+      К основным полям добавляются дополнительные характеристики из экспериментов.
+    columns:
+      - name: nanoparticle_id
+        description: "Уникальный surrogate key для наночастицы."
+        tests:
+          - unique
+          - not_null
+      - name: nanoparticle
+        description: "Название наночастицы."
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы."
+      - name: has_coating
+        description: "Булевый признак наличия покрытия."
+      - name: np_size_avg_nm
+        description: "Средний размер наночастицы."
+      - name: canonical_name
+        description: "Строковый ключ для диагностики и join-ов."
+      - name: coat_functional_group
+        description: "Группа покрытия/функционализации."
+      - name: standardized_synthesis_method
+        description: "Стандартизированный метод синтеза."
+      - name: is_surface_positive
+        description: "Булевый признак положительного заряда поверхности."
+      - name: potential_mv
+        description: "Значение потенциала (mV)."
+      - name: hydrodynamic_nm
+        description: "Гидродинамический размер (nm)."
+      - name: core_nm
+        description: "Размер ядра (nm)."
+      - name: shape
+        description: "Исходная форма наночастицы."
+      - name: zeta_potential_mv
+        description: "Зета-потенциал (mV)."
+      - name: size_in_medium_nm
+        description: "Размер в среде (nm)."
+      - name: surface_charge
+        description: "Заряд поверхности."
+      - name: synthesis_method
+        description: "Метод синтеза (оригинальный)."
+
+  - name: dim_cytotox_publication
+    description: |
+      Справочник публикаций для cytotox.
+      Содержит уникальные публикации, встречающиеся в данных, и их основные атрибуты (DOI, журнал, год, доступность и др.).
+      Используется для связи с факт-таблицей через publication_id.
+    columns:
+      - name: publication_id
+        description: "Уникальный surrogate key для публикации."
+        tests:
+          - unique
+          - not_null
+      - name: doi
+        description: "DOI публикации."
+      - name: article_list
+        description: "Идентификатор статьи в датасете."
+      - name: journal_name
+        description: "Название журнала."
+      - name: publisher
+        description: "Издатель."
+      - name: year
+        description: "Год публикации."
+      - name: title
+        description: "Название статьи."
+      - name: journal_is_oa
+        description: "Журнал — Open Access (TRUE/FALSE)."
+      - name: is_oa
+        description: "Статья — Open Access (TRUE/FALSE)."
+      - name: oa_status
+        description: "Статус Open Access."
+      - name: pdf
+        description: "Имя PDF-файла."
+      - name: access
+        description: "Доступ (1 = открыт, 0 = закрыт)."
+      - name: access_bool
+        description: "Булевый признак открытого доступа."
+
+  - name: dim_cytotox_source
+    description: |
+      Справочник источников данных для cytotox.
+      Каждая строка — уникальный источник данных, определяемый по имени таблицы и времени загрузки/обработки.
+      Используется для отслеживания происхождения данных в факт-таблице через source_id.
+    columns:
+      - name: source_id
+        description: "Уникальный surrogate key для источника."
+        tests:
+          - unique
+          - not_null
+      - name: source_table
+        description: "Имя исходной таблицы."
+      - name: dbt_loaded_at
+        description: "Время загрузки в dbt."
+      - name: dbt_curated_at
+        description: "Время обработки на Curated-слое."
+
+  - name: fact_cytotox_experiments
+    description: |
+      Факт-таблица экспериментов по цитотоксичности.
+      Каждая строка — отдельный эксперимент или измерение.
+      Ссылается на справочники наночастиц, публикаций, клеточных линий и источников через внешние ключи.
+      Содержит только специфичные для эксперимента поля (например, условия, результаты, параметры теста).
+    columns:
+      - name: serial_number
+        description: "Уникальный идентификатор эксперимента."
+        tests:
+          - unique
+          - not_null
+      - name: nanoparticle_id
+        description: "Внешний ключ на справочник наночастиц."
+        tests:
+          - relationships:
+              to: ref('dim_cytotox_nanoparticle')
+              field: nanoparticle_id
+      - name: publication_id
+        description: "Внешний ключ на справочник публикаций."
+        tests:
+          - relationships:
+              to: ref('dim_cytotox_publication')
+              field: publication_id
+      - name: cell_line_id
+        description: "Внешний ключ на справочник клеточных линий."
+        tests:
+          - relationships:
+              to: ref('dim_cytotox_cell_line')
+              field: cell_line_id
+      - name: source_id
+        description: "Внешний ключ на справочник источников."
+        tests:
+          - relationships:
+              to: ref('dim_cytotox_source')
+              field: source_id
+      - name: no_of_cells_cells_well
+        description: "Плотность клеток в лунке."
+      - name: time_hr
+        description: "Время экспозиции (часы)."
+      - name: concentration
+        description: "Концентрация наночастицы."
+      - name: test
+        description: "Тип теста (например, MTT, LDH)."
+      - name: test_indicator
+        description: "Индикатор теста."
+      - name: "viability_%"
+        description: "Жизнеспособность клеток (%) относительно контроля."

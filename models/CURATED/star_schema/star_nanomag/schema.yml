@@ -1,0 +1,203 @@
+version: 2
+
+models:
+  - name: dim_nanomag_nanoparticle
+    description: |
+      Справочник уникальных магнитных наночастиц.
+      Каждая строка — уникальная наночастица, определяемая по составу, оболочкам, пространственным группам и размеру.
+      К основным полям добавляются дополнительные характеристики из экспериментов.
+    columns:
+      - name: nanoparticle_id
+        description: "Уникальный surrogate key для наночастицы."
+        tests:
+          - unique
+          - not_null
+      - name: nanoparticle
+        description: "Название наночастицы или материала."
+      - name: np_shell
+        description: "Материал первой оболочки наночастицы."
+      - name: np_shell_2
+        description: "Материал второй оболочки (если есть)."
+      - name: space_group_core
+        description: "Кристаллографическая группа ядра."
+      - name: space_group_shell
+        description: "Кристаллографическая группа оболочки."
+      - name: xrd_scherrer_size
+        description: "Размер по уравнению Шеррера (XRD)."
+      - name: core_shell_formula
+        description: "Формула ядро/оболочка."
+      - name: np_hydro_size
+        description: "Гидродинамический размер (nm)."
+      - name: emic_size
+        description: "Размер по электронной микроскопии."
+      - name: instrument
+        description: "Инструмент измерения."
+      - name: name
+        description: "Имя/маркировка образца."
+      - name: squid_h_max
+        description: "Максимальное магнитное поле в SQUID."
+      - name: fc_field_t_numeric
+        description: "Поле FC (числовое значение, T)."
+      - name: fc_field_t_original
+        description: "Исходное значение поля FC."
+      - name: squid_temperature_numeric
+        description: "Температура измерения SQUID (числовое значение, K)."
+      - name: squid_temperature_original
+        description: "Исходное значение температуры SQUID."
+      - name: squid_sat_mag_numeric
+        description: "Намагниченность насыщения SQUID (числовое значение, emu/g)."
+      - name: squid_sat_mag_original
+        description: "Исходное значение намагниченности насыщения."
+      - name: coercivity_numeric
+        description: "Коэрцитивная сила (числовое значение, kOe)."
+      - name: coercivity_original
+        description: "Исходное значение коэрцитивной силы."
+      - name: squid_rem_mag_numeric
+        description: "Остаточная намагниченность SQUID (числовое значение, emu/g)."
+      - name: squid_rem_mag_original
+        description: "Исходное значение остаточной намагниченности."
+      - name: exchange_bias_shift_oe_numeric
+        description: "Сдвиг exchange bias (числовое значение, Oe)."
+      - name: exchange_bias_shift_oe_original
+        description: "Исходное значение сдвига exchange bias."
+      - name: vertical_loop_shift_m_vsl_emu_g_numeric
+        description: "Вертикальный сдвиг петли (числовое значение, emu/g)."
+      - name: vertical_loop_shift_m_vsl_emu_g_original
+        description: "Исходное значение вертикального сдвига петли."
+
+  - name: dim_nanomag_publication
+    description: |
+      Справочник публикаций для nanomag.
+      Содержит уникальные публикации, встречающиеся в данных, и их основные атрибуты (DOI, журнал, год, доступность и др.).
+      Используется для связи с факт-таблицей через publication_id.
+    columns:
+      - name: publication_id
+        description: "Уникальный surrogate key для публикации."
+        tests:
+          - unique
+          - not_null
+      - name: doi
+        description: "DOI публикации."
+      - name: journal
+        description: "Название журнала."
+      - name: publisher
+        description: "Издатель."
+      - name: year
+        description: "Год публикации."
+      - name: title
+        description: "Название статьи."
+      - name: pdf
+        description: "Имя PDF-файла."
+      - name: access
+        description: "Доступ (1 = открыт, 0 = закрыт)."
+      - name: access_bool
+        description: "Булевый признак открытого доступа."
+      - name: supp
+        description: "Индикатор наличия дополнительной информации."
+      - name: article_name_folder
+        description: "Имя папки со статьёй."
+      - name: supp_info_name_folder
+        description: "Папка с supplementary-данными."
+
+  - name: dim_nanomag_source
+    description: |
+      Справочник источников данных для nanomag.
+      Каждая строка — уникальный источник данных, определяемый по имени таблицы и времени загрузки/обработки.
+      Используется для отслеживания происхождения данных в факт-таблице через source_id.
+    columns:
+      - name: source_id
+        description: "Уникальный surrogate key для источника."
+        tests:
+          - unique
+          - not_null
+      - name: source_table
+        description: "Имя исходной таблицы."
+      - name: dbt_loaded_at
+        description: "Время загрузки в dbt."
+      - name: dbt_curated_at
+        description: "Время обработки на Curated-слое."
+
+  - name: dim_nanomag_validation
+    description: |
+      Справочник валидации данных для nanomag.
+      Каждая строка — уникальная комбинация параметров валидации/проверки.
+      Используется для связи с факт-таблицей через validation_id.
+    columns:
+      - name: validation_id
+        description: "Уникальный surrogate key для параметров валидации."
+        tests:
+          - unique
+          - not_null
+      - name: verified_by
+        description: "Имя валидатора."
+      - name: verification_date
+        description: "Дата ручной проверки."
+      - name: has_mistake_in_matadata
+        description: "Флаг ошибок в метаданных."
+      - name: verification_required
+        description: "Нужна ли ручная проверка."
+      - name: comment
+        description: "Комментарий валидатора."
+
+  - name: fact_nanomag_experiments
+    description: |
+      Факт-таблица экспериментов по магнитным наночастицам.
+      Каждая строка — отдельное измерение или эксперимент.
+      Ссылается на справочники наночастиц, публикаций, источников и валидации через внешние ключи.
+      Содержит только специфичные для эксперимента поля.
+    columns:
+      - name: id
+        description: "Уникальный идентификатор эксперимента."
+        tests:
+          - unique
+          - not_null
+      - name: nanoparticle_id
+        description: "Внешний ключ на справочник наночастиц."
+        tests:
+          - relationships:
+              to: ref('dim_nanomag_nanoparticle')
+              field: nanoparticle_id
+      - name: publication_id
+        description: "Внешний ключ на справочник публикаций."
+        tests:
+          - relationships:
+              to: ref('dim_nanomag_publication')
+              field: publication_id
+      - name: source_id
+        description: "Внешний ключ на справочник источников."
+        tests:
+          - relationships:
+              to: ref('dim_nanomag_source')
+              field: source_id
+      - name: validation_id
+        description: "Внешний ключ на справочник валидации."
+        tests:
+          - relationships:
+              to: ref('dim_nanomag_validation')
+              field: validation_id
+      - name: zfc_h_meas
+        description: "Поле измерения ZFC."
+      - name: mri_r1
+        description: "MRI relaxivity r1."
+      - name: mri_r2
+        description: "MRI relaxivity r2."
+      - name: htherm_sar
+        description: "Specific absorption rate (SAR)."
+      - name: hc_koe
+        description: "Коэрцитивная сила (kOe)."
+      - name: vertical_loop_shift_m_vsl_emu_g_numeric
+        description: "Вертикальный сдвиг петли (emu/g)."
+      - name: squid_h_max
+        description: "Максимальное магнитное поле в SQUID."
+      - name: fc_field_t_numeric
+        description: "Поле FC (T)."
+      - name: squid_temperature_numeric
+        description: "Температура SQUID (K)."
+      - name: squid_sat_mag_numeric
+        description: "Намагниченность насыщения SQUID (emu/g)."
+      - name: coercivity_numeric
+        description: "Коэрцитивная сила (kOe)."
+      - name: squid_rem_mag_numeric
+        description: "Остаточная намагниченность SQUID (emu/g)."
+      - name: exchange_bias_shift_oe_numeric
+        description: "Сдвиг exchange bias (Oe)."

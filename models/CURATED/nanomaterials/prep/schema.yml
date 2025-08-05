@@ -1,0 +1,133 @@
+version: 2
+
+models:
+  - name: cur_cytotox
+    description: "Промежуточная модель для очистки и нормализации данных по цитотоксичности наночастиц.
+      Удаляет дубли, формирует булевые признаки, нормализует форму, метод синтеза и ключевые поля для дальнейшей аналитики."
+    columns:
+      - name: serial_number
+        description: "Уникальный идентификатор эксперимента."
+        tests:
+          - unique
+          - not_null
+      - name: is_surface_positive
+        description: "Булевый признак положительного заряда поверхности."
+      - name: is_human
+        description: "Булевый признак: Human (H) - true, Animal - false."
+      - name: access_bool
+        description: "Булевый признак открытого доступа"
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы"
+      - name: standardized_synthesis_method
+        description: "Стандартизированный метод синтеза"
+      - name: np_size_avg_nm
+        description: "Средний размер наночастицы (используется для идентификации)."
+      - name: has_coating
+        description: "Булевый признак наличия покрытия."
+
+  - name: cur_nanomag
+    description:
+      "Промежуточная модель для очистки и нормализации данных о магнитных наночастицах.
+      Удаляет дубли, формирует булевый признак открытого доступа."
+    columns:
+      - name: id
+        description: "Уникальный идентификатор записи."
+        tests:
+          - unique
+          - not_null
+      - name: access_bool
+        description: "Булевый признак открытого доступа"
+
+  - name: cur_nanozymes
+    description:
+      "Промежуточная модель для очистки и нормализации данных о наноэнзимах.
+      Удаляет дубли, формирует булевый признак доступа, парсит диапазоны размеров (length, width, depth)."
+    columns:
+      - name: id
+        description: "Уникальный идентификатор записи."
+        tests:
+          - unique
+          - not_null
+      - name: access_bool
+        description: "Булевый признак открытого доступа"
+      - name: length_lower
+        description: "Нижняя граница диапазона длины (или значение, если не диапазон)."
+      - name: length_upper
+        description: "Верхняя граница диапазона длины (или значение, если не диапазон)."
+      - name: length_mean
+        description: "Среднее значение диапазона длины."
+      - name: width_lower
+        description: "Нижняя граница диапазона ширины."
+      - name: width_upper
+        description: "Верхняя граница диапазона ширины."
+      - name: width_mean
+        description: "Среднее значение диапазона ширины."
+      - name: depth_lower
+        description: "Нижняя граница диапазона глубины."
+      - name: depth_upper
+        description: "Верхняя граница диапазона глубины."
+      - name: depth_mean
+        description: "Среднее значение диапазона глубины."
+
+  - name: cur_seltox
+    description:
+      "Промежуточная модель для очистки и нормализации данных по селективной токсичности наночастиц.
+      Фильтрует некорректные значения концентрации, парсит числовые значения, нормализует форму и метод синтеза, создаёт признак покрытия."
+    columns:
+      - name: serial_number
+        description: "Уникальный идентификатор эксперимента."
+        tests:
+          - unique
+          - not_null
+      - name: mic_np_µg_ml_parsed
+        description: "Числовое значение MIC, определённое только для корректных строк mic_np_µg_ml."
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы."
+      - name: standardized_synthesis_method
+        description: "Стандартизированный метод синтеза."
+      - name: has_coating
+        description: "Булевый признак наличия покрытия."
+
+  - name: cur_synergy
+    description:
+      "Промежуточная модель для очистки и нормализации данных по синергии наночастиц и антибиотиков.
+      Фильтрует строки с некорректными значениями, парсит числовые поля, нормализует форму и метод синтеза, создаёт признак покрытия."
+    columns:
+      - name: serial_number
+        description: "Уникальный идентификатор эксперимента."
+        tests:
+          - unique
+          - not_null
+      - name: access_bool
+        description: "Булевый признак открытого доступа"
+      - name: np_size_min_nm_parsed
+        description: "Числовое значение из np_size_min_nm, преобразованное из текста."
+      - name: zeta_potential_mv_parsed
+        description: "Числовое значение из zeta_potential_mv, преобразованное из текста."
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы."
+      - name: standardized_synthesis_method
+        description: "Стандартизированный метод синтеза."
+      - name: has_coating
+        description: "Булевый признак наличия покрытия."
+
+  - name: nanoparticle_list
+    description:
+      "Глобальный справочник уникальных наночастиц, встречающихся хотя бы в одном из обработанных датасетов (cytotox, seltox, synergy).
+      Используется для унификации идентификаторов во всех star-схемах."
+    columns:
+      - name: nanoparticle_id
+        description: "Глобальный surrogate key для уникальной комбинации состава, формы, покрытия и размера наночастицы."
+        tests:
+          - unique
+          - not_null
+      - name: nanoparticle
+        description: "Название наночастицы."
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы."
+      - name: has_coating
+        description: "Булевый признак наличия покрытия."
+      - name: np_size_avg_nm
+        description: "Средний размер наночастицы."
+      - name: canonical_name
+        description: "Строковый ключ для диагностики и join-ов."

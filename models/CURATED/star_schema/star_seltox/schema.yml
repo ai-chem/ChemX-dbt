@@ -1,0 +1,145 @@
+version: 2
+
+models:
+  - name: dim_seltox_bacteria
+    description: "Справочник уникальных бактерий (штаммов) для экспериментов seltox."
+    columns:
+      - name: bacteria_id
+        description: "Уникальный идентификатор бактерии."
+        tests: [unique, not_null]
+      - name: bacteria
+        description: "Название бактерии."
+      - name: strain
+        description: "Идентификатор штамма."
+      - name: mdr
+        description: "Признак множественной лекарственной устойчивости (1 = MDR, 0 = нет)."
+
+  - name: dim_seltox_nanoparticle
+    description: "Справочник уникальных наночастиц для seltox с дополнительными характеристиками."
+    columns:
+      - name: nanoparticle_id
+        description: "Уникальный идентификатор наночастицы."
+        tests: [unique, not_null]
+      - name: nanoparticle
+        description: "Название наночастицы."
+      - name: normalized_shape
+        description: "Нормализованная форма наночастицы."
+      - name: has_coating
+        description: "Булевый признак покрытия."
+      - name: np_size_avg_nm
+        description: "Средний размер наночастицы."
+      - name: canonical_name
+        description: "Строковый ключ для диагностики и join-ов."
+      - name: shape
+        description: "Исходная форма."
+      - name: coating
+        description: "Покрытие."
+      - name: np_size_min_nm
+        description: "Минимальный размер наночастицы."
+      - name: np_size_max_nm
+        description: "Максимальный размер наночастицы."
+      - name: hydrodynamic_diameter_nm
+        description: "Гидродинамический диаметр."
+      - name: zeta_potential_mv
+        description: "Зета-потенциал."
+      - name: synthesis_method
+        description: "Метод синтеза."
+      - name: standardized_synthesis_method
+        description: "Стандартизированный метод синтеза."
+      - name: precursor_of_np
+        description: "Прекурсор наночастицы."
+      - name: ph_during_synthesis
+        description: "pH во время синтеза."
+      - name: temperature_for_extract_c
+        description: "Температура экстракции (°C)."
+      - name: duration_preparing_extract_min
+        description: "Время приготовления экстракта (мин)."
+      - name: concentration_of_precursor_mm
+        description: "Концентрация прекурсора (мМ)."
+      - name: solvent_for_extract
+        description: "Растворитель для экстракта."
+
+  - name: dim_seltox_publication
+    description: "Справочник публикаций для seltox."
+    columns:
+      - name: publication_id
+        description: "Уникальный идентификатор публикации."
+        tests: [unique, not_null]
+      - name: doi
+        description: "DOI публикации."
+      - name: article_list
+        description: "Идентификатор статьи в датасете."
+      - name: journal_name
+        description: "Название журнала."
+      - name: publisher
+        description: "Издатель."
+      - name: year
+        description: "Год публикации."
+      - name: title
+        description: "Название статьи."
+      - name: journal_is_oa
+        description: "Журнал — Open Access."
+      - name: is_oa
+        description: "Статья — Open Access."
+      - name: oa_status
+        description: "Статус Open Access."
+      - name: pdf
+        description: "Имя PDF-файла."
+      - name: access
+        description: "Доступ (1 = открыт, 0 = закрыт)."
+      - name: reference
+        description: "Внешний источник или ссылка."
+
+  - name: dim_seltox_source
+    description: "Справочник источников данных для seltox."
+    columns:
+      - name: source_id
+        description: "Уникальный идентификатор источника."
+        tests: [unique, not_null]
+      - name: source_table
+        description: "Имя исходной таблицы."
+      - name: dbt_loaded_at
+        description: "Время загрузки в dbt."
+
+  - name: fact_seltox_experiments
+    description: "Факт-таблица экспериментов по селективной токсичности наночастиц."
+    columns:
+      - name: serial_number
+        description: "Уникальный идентификатор эксперимента."
+        tests: [unique, not_null]
+      - name: nanoparticle_id
+        description: "Внешний ключ на справочник наночастиц."
+        tests:
+          - relationships:
+              to: ref('dim_seltox_nanoparticle')
+              field: nanoparticle_id
+      - name: bacteria_id
+        description: "Внешний ключ на справочник бактерий."
+        tests:
+          - relationships:
+              to: ref('dim_seltox_bacteria')
+              field: bacteria_id
+      - name: publication_id
+        description: "Внешний ключ на справочник публикаций."
+        tests:
+          - relationships:
+              to: ref('dim_seltox_publication')
+              field: publication_id
+      - name: source_id
+        description: "Внешний ключ на справочник источников."
+        tests:
+          - relationships:
+              to: ref('dim_seltox_source')
+              field: source_id
+      - name: method
+        description: "Тип теста (например, MIC, ZOI)."
+      - name: mic_np_µg_ml
+        description: "MIC наночастицы (мкг/мл)."
+      - name: mic_np_µg_ml_parsed
+        description: "Стандартизированное значение MIC."
+      - name: concentration
+        description: "Концентрация наночастицы для ZOI."
+      - name: zoi_np_mm
+        description: "Зона ингибирования (мм)."
+      - name: time_set_hours
+        description: "Длительность эксперимента (часы)."

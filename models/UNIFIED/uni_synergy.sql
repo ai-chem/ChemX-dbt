@@ -36,7 +36,7 @@ SELECT
     coating_with_antimicrobial_peptide_polymers,
     combined_mic,
     peptide_mic,
-    "viability_%",
+    "viability_%" AS viability_percent,
     viability_error,
     journal_name,
     publisher,

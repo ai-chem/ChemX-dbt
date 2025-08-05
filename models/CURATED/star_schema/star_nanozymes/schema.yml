@@ -1,0 +1,128 @@
+version: 2
+
+models:
+  - name: dim_nanozymes_nanoparticle
+    description: "Справочник уникальных наночастиц по морфологии, кристаллографии и размерам."
+    columns:
+      - name: nanoparticle_id
+        description: "Уникальный идентификатор наночастицы."
+        tests: [unique, not_null]
+      - name: nanoparticle
+        description: "Название наночастицы."
+      - name: syngony
+        description: "Кристаллическая система."
+      - name: surface
+        description: "Модификация или покрытие поверхности."
+      - name: length_lower
+        description: "Минимальная длина, нм."
+      - name: length_upper
+        description: "Максимальная длина, нм."
+      - name: length_mean
+        description: "Средняя длина, нм."
+      - name: width_lower
+        description: "Минимальная ширина, нм."
+      - name: width_upper
+        description: "Максимальная ширина, нм."
+      - name: width_mean
+        description: "Средняя ширина, нм."
+      - name: depth_lower
+        description: "Минимальная толщина, нм."
+      - name: depth_upper
+        description: "Максимальная толщина, нм."
+      - name: depth_mean
+        description: "Средняя толщина, нм."
+      - name: length
+        description: "Исходное значение длины."
+      - name: width
+        description: "Исходное значение ширины."
+      - name: depth
+        description: "Исходное значение толщины."
+
+  - name: dim_nanozymes_publication
+    description: "Справочник публикаций по nanozymes."
+    columns:
+      - name: publication_id
+        description: "Уникальный идентификатор публикации."
+        tests: [unique, not_null]
+      - name: doi
+        description: "DOI публикации."
+      - name: journal
+        description: "Журнал."
+      - name: year
+        description: "Год публикации."
+      - name: title
+        description: "Название статьи."
+      - name: pdf
+        description: "Имя PDF-файла."
+      - name: access
+        description: "Доступ (1 = открыт, 0 = закрыт)."
+      - name: access_bool
+        description: "Булевый признак открытого доступа."
+
+  - name: dim_nanozymes_source
+    description: "Справочник источников данных по nanozymes."
+    columns:
+      - name: source_id
+        description: "Уникальный идентификатор источника."
+        tests: [unique, not_null]
+      - name: source_table
+        description: "Имя исходной таблицы."
+      - name: dbt_loaded_at
+        description: "Время загрузки."
+      - name: dbt_curated_at
+        description: "Время обработки."
+
+  - name: fact_nanozymes_experiments
+    description: "Факт-таблица экспериментов по каталитической активности наночастиц."
+    columns:
+      - name: id
+        description: "Уникальный идентификатор эксперимента."
+        tests: [unique, not_null]
+      - name: nanoparticle_id
+        description: "Внешний ключ на справочник наночастиц."
+        tests:
+          - relationships:
+              to: ref('dim_nanozymes_nanoparticle')
+              field: nanoparticle_id
+      - name: publication_id
+        description: "Внешний ключ на справочник публикаций."
+        tests:
+          - relationships:
+              to: ref('dim_nanozymes_publication')
+              field: publication_id
+      - name: source_id
+        description: "Внешний ключ на справочник источников."
+        tests:
+          - relationships:
+              to: ref('dim_nanozymes_source')
+              field: source_id
+      - name: activity
+        description: "Тип каталитической активности."
+      - name: reaction_type
+        description: "Тип реакции."
+      - name: target_source
+        description: "Источник значения активности."
+      - name: c_min
+        description: "Минимальная концентрация субстрата."
+      - name: c_max
+        description: "Максимальная концентрация субстрата."
+      - name: c_const
+        description: "Постоянная концентрация."
+      - name: c_const_unit
+        description: "Единица измерения постоянной концентрации."
+      - name: ccat_value
+        description: "Концентрация катализатора."
+      - name: ccat_unit
+        description: "Единица измерения катализатора."
+      - name: km_value
+        description: "Константа Михаэлиса (Km)."
+      - name: km_unit
+        description: "Единица измерения Km."
+      - name: vmax_value
+        description: "Максимальная скорость реакции (Vmax)."
+      - name: vmax_unit
+        description: "Единица измерения Vmax."
+      - name: ph
+        description: "pH реакции."
+      - name: temperature
+        description: "Температура реакции."

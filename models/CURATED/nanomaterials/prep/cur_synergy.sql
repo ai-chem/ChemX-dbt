@@ -44,6 +44,16 @@ select
     {{ standardize_synthesis_method('synthesis_method') }} as standardized_synthesis_method,
 
     -- Признак наличия покрытия (создаётся на основе поля coating_with_antimicrobial_peptide_polymers)
-    {{ create_has_coating_column('coating_with_antimicrobial_peptide_polymers') }}
+    {{ create_has_coating_column('coating_with_antimicrobial_peptide_polymers') }},
+
+
+    CASE
+        -- Приводим все к нижнему регистру и проверяем на маркеры устойчивости
+        WHEN lower(mdr) IN ('r', 'methicilin resistant') THEN true
+        -- Если mdr не NULL, но не является маркером устойчивости, считаем, что устойчивости нет
+        WHEN mdr IS NOT NULL THEN false
+        -- Если mdr был NULL, оставляем NULL, чтобы потом его обработать
+        ELSE NULL
+    END as is_mdr
 
 from dedup_synergy
