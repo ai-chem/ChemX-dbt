@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import sqlalchemy
-import psycopg2
 from sqlalchemy import text
 
 # Параметры подключения к PostgreSQL
@@ -12,7 +11,9 @@ DB_PORT = "5432"
 DB_NAME = "ChemX"
 
 # Создаем подключение к БД
-connection_string = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+connection_string = (
+    f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
 engine = sqlalchemy.create_engine(connection_string)
 
 # Создаем схему raw, если она не существует
@@ -24,7 +25,7 @@ with engine.connect() as connection:
 csv_folder = "C:/Users/s-ars/Desktop/ChemX_dbt/data/raw"
 
 # Получаем список всех CSV файлов в папке
-csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv')]
+csv_files = [f for f in os.listdir(csv_folder) if f.endswith(".csv")]
 
 print(f"Найдено {len(csv_files)} CSV файлов для загрузки")
 
@@ -34,7 +35,7 @@ for file in csv_files:
     table_name = os.path.splitext(file)[0].lower()
 
     # Заменяем проблемные символы в имени таблицы
-    table_name = table_name.replace('-', '_').replace(' ', '_')
+    table_name = table_name.replace("-", "_").replace(" ", "_")
 
     # Полный путь к файлу
     file_path = os.path.join(csv_folder, file)
@@ -43,18 +44,18 @@ for file in csv_files:
 
     try:
         # Читаем CSV файл
-        df = pd.read_csv(file_path, sep=',', encoding='utf-8')
+        df = pd.read_csv(file_path, sep=",", encoding="utf-8")
 
         # Приводим имена колонок к нижнему регистру и заменяем пробелы на подчеркивания
-        df.columns = [col.lower().replace(' ', '_') for col in df.columns]
+        df.columns = [col.lower().replace(" ", "_") for col in df.columns]
 
         # Загружаем данные в PostgreSQL
         df.to_sql(
             table_name,
             engine,
-            schema='raw',
-            if_exists='replace',  # 'replace' перезапишет таблицу, 'append' добавит данные
-            index=False
+            schema="raw",
+            if_exists="replace",  # 'replace' перезапишет таблицу, 'append' добавит данные
+            index=False,
         )
 
         print(f"Успешно загружено {len(df)} строк в raw.{table_name}")
