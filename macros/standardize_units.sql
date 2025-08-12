@@ -20,7 +20,6 @@
         -- Умножаем на коэффициент концентрации
         * case
             when replace(replace(lower({{ unit_column }}), '−', '-'), ' ', '') like '%mm%' then 1e-3
-            -- ★★★ ИСПРАВЛЕНИЕ ЗДЕСЬ ★★★
             when replace(replace(lower({{ unit_column }}), '−', '-'), ' ', '') like '%μm%' or replace(replace(lower({{ unit_column }}), '−', '-'), ' ', '') like '%um%' then 1e-6
             when replace(replace(lower({{ unit_column }}), '−', '-'), ' ', '') like '%nm%' then 1e-9
             else 1.0
