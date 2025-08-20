@@ -10,14 +10,8 @@ with joined_data as (
         np.width,
         np.depth,
         np.surface,
-        np.length_lower,
-        np.length_upper,
         np.length_mean,
-        np.width_lower,
-        np.width_upper,
         np.width_mean,
-        np.depth_lower,
-        np.depth_upper,
         np.depth_mean,
 
         fact.activity,
@@ -30,9 +24,8 @@ with joined_data as (
         fact.ccat_value,
         fact.ccat_unit,
         fact.km_value,
+        fact.vmax_standardized_m_per_s,
         fact.km_unit,
-        fact.vmax_value,
-        fact.vmax_unit,
         fact.ph,
         fact.temperature
 
@@ -43,32 +36,24 @@ with joined_data as (
 -- Шаг 2: Выбираем поля и обрабатываем пропуски
 select
     -- Столбцы без пропусков
-    id,
     nanoparticle,
     activity,
     reaction_type,
-    target_source,
 
     -- ====================================================================
     -- Обработка ЧИСЛОВЫХ колонок
     -- ====================================================================
-    {{ impute_numeric('length_lower') }},
-    {{ impute_numeric('length_upper') }},
     {{ impute_numeric('length_mean') }},
-    {{ impute_numeric('width_lower') }},
-    {{ impute_numeric('width_upper') }},
     {{ impute_numeric('width_mean') }},
-    {{ impute_numeric('depth_lower') }},
-    {{ impute_numeric('depth_upper') }},
     {{ impute_numeric('depth_mean') }},
     {{ impute_numeric('c_min') }},
     {{ impute_numeric('c_max') }},
     {{ impute_numeric('c_const') }},
     {{ impute_numeric('ccat_value') }},
     {{ impute_numeric('km_value') }},
-    {{ impute_numeric('vmax_value') }},
     {{ impute_numeric('ph') }},
     {{ impute_numeric('temperature') }},
+    {{ impute_numeric('vmax_standardized_m_per_s') }},
 
     -- ====================================================================
     -- Обработка ТЕКСТОВЫХ колонок
@@ -80,7 +65,6 @@ select
     {{ impute_categorical('surface') }},
     {{ impute_categorical('c_const_unit') }},
     {{ impute_categorical('ccat_unit') }},
-    {{ impute_categorical('km_unit') }},
-    {{ impute_categorical('vmax_unit') }}
+    {{ impute_categorical('km_unit') }}
 
 from joined_data

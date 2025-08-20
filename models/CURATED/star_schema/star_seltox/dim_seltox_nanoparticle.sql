@@ -44,8 +44,8 @@ select
 
 from {{ ref('nanoparticle_list') }} as nanoparticle_list
 left join first_seltox_row
-    on nanoparticle_list.nanoparticle = first_seltox_row.nanoparticle
-    and nanoparticle_list.normalized_shape = first_seltox_row.normalized_shape
-    and nanoparticle_list.has_coating = first_seltox_row.has_coating
-    and nanoparticle_list.np_size_avg_nm = first_seltox_row.np_size_avg_nm
+    on nanoparticle_list.nanoparticle IS NOT DISTINCT FROM first_seltox_row.nanoparticle
+    and nanoparticle_list.normalized_shape IS NOT DISTINCT FROM first_seltox_row.normalized_shape
+    and nanoparticle_list.has_coating IS NOT DISTINCT FROM first_seltox_row.has_coating
+    and nanoparticle_list.np_size_avg_nm IS NOT DISTINCT FROM first_seltox_row.np_size_avg_nm
     and first_seltox_row.row_num_in_group = 1

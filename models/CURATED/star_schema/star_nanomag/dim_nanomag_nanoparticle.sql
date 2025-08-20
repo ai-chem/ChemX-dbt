@@ -69,10 +69,10 @@ select
 
 from unique_nanoparticles
 left join first_row
-    on unique_nanoparticles.nanoparticle = first_row.nanoparticle
-    and unique_nanoparticles.np_shell = first_row.np_shell
-    and unique_nanoparticles.np_shell_2 = first_row.np_shell_2
-    and unique_nanoparticles.space_group_core = first_row.space_group_core
-    and unique_nanoparticles.space_group_shell = first_row.space_group_shell
-    and unique_nanoparticles.xrd_scherrer_size = first_row.xrd_scherrer_size
+    on unique_nanoparticles.nanoparticle IS NOT DISTINCT FROM first_row.nanoparticle
+    and unique_nanoparticles.np_shell IS NOT DISTINCT FROM first_row.np_shell
+    and unique_nanoparticles.np_shell_2 IS NOT DISTINCT FROM first_row.np_shell_2
+    and unique_nanoparticles.space_group_core IS NOT DISTINCT FROM first_row.space_group_core
+    and unique_nanoparticles.space_group_shell IS NOT DISTINCT FROM first_row.space_group_shell
+    and unique_nanoparticles.xrd_scherrer_size IS NOT DISTINCT FROM first_row.xrd_scherrer_size
     and first_row.row_num_in_group = 1

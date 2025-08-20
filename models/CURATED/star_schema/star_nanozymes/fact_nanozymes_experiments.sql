@@ -58,6 +58,7 @@ select
     final_cur_nanozymes.km_unit,
     final_cur_nanozymes.vmax_value,
     final_cur_nanozymes.vmax_unit,
+    final_cur_nanozymes.vmax_standardized_m_per_s,
     final_cur_nanozymes.ph,
     final_cur_nanozymes.temperature
 

@@ -86,16 +86,16 @@ select
 
 from unique_nanoparticles
 left join first_row
-    on unique_nanoparticles.nanoparticle = first_row.nanoparticle
-    and unique_nanoparticles.syngony = first_row.syngony
-    and unique_nanoparticles.surface = first_row.surface
-    and unique_nanoparticles.length_lower = first_row.length_lower
-    and unique_nanoparticles.length_upper = first_row.length_upper
-    and unique_nanoparticles.length_mean = first_row.length_mean
-    and unique_nanoparticles.width_lower = first_row.width_lower
-    and unique_nanoparticles.width_upper = first_row.width_upper
-    and unique_nanoparticles.width_mean = first_row.width_mean
-    and unique_nanoparticles.depth_lower = first_row.depth_lower
-    and unique_nanoparticles.depth_upper = first_row.depth_upper
-    and unique_nanoparticles.depth_mean = first_row.depth_mean
+    on unique_nanoparticles.nanoparticle IS NOT DISTINCT FROM first_row.nanoparticle
+    and unique_nanoparticles.syngony IS NOT DISTINCT FROM first_row.syngony
+    and unique_nanoparticles.surface IS NOT DISTINCT FROM first_row.surface
+    and unique_nanoparticles.length_lower IS NOT DISTINCT FROM first_row.length_lower
+    and unique_nanoparticles.length_upper IS NOT DISTINCT FROM first_row.length_upper
+    and unique_nanoparticles.length_mean IS NOT DISTINCT FROM first_row.length_mean
+    and unique_nanoparticles.width_lower IS NOT DISTINCT FROM first_row.width_lower
+    and unique_nanoparticles.width_upper IS NOT DISTINCT FROM first_row.width_upper
+    and unique_nanoparticles.width_mean IS NOT DISTINCT FROM first_row.width_mean
+    and unique_nanoparticles.depth_lower IS NOT DISTINCT FROM first_row.depth_lower
+    and unique_nanoparticles.depth_upper IS NOT DISTINCT FROM first_row.depth_upper
+    and unique_nanoparticles.depth_mean IS NOT DISTINCT FROM first_row.depth_mean
     and first_row.row_num_in_group = 1

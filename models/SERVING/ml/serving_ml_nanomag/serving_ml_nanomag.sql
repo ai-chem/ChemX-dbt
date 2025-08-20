@@ -22,8 +22,13 @@ with joined_data as (
         fact.coercivity_numeric,
         fact.squid_rem_mag_numeric,
         fact.exchange_bias_shift_oe_numeric,
-        fact.vertical_loop_shift_m_vsl_emu_g_numeric
+        fact.vertical_loop_shift_m_vsl_emu_g_numeric,
 
+        np.core_shell_formula,
+        np.emic_size,
+        np.np_hydro_size,
+        np.instrument,
+        np.name
     from {{ ref('fact_nanomag_experiments') }} as fact
     left join {{ ref('dim_nanomag_nanoparticle') }} as np on fact.nanoparticle_id = np.nanoparticle_id
 )
@@ -52,12 +57,19 @@ select
     {{ impute_numeric('exchange_bias_shift_oe_numeric') }},
     {{ impute_numeric('vertical_loop_shift_m_vsl_emu_g_numeric') }},
 
+    {{ impute_numeric('emic_size') }},
+    {{ impute_numeric('np_hydro_size') }},
+
     -- ====================================================================
     -- Обработка ТЕКСТОВЫХ колонок
     -- ====================================================================
     {{ impute_categorical('np_shell_2') }},
     {{ impute_categorical('np_shell') }},
     {{ impute_categorical('space_group_core') }},
-    {{ impute_categorical('space_group_shell') }}
+    {{ impute_categorical('space_group_shell') }},
+
+    {{ impute_categorical('core_shell_formula') }},
+    {{ impute_categorical('instrument') }},
+    {{ impute_categorical('name') }}
 
 from joined_data

@@ -20,7 +20,6 @@ select
     np.is_surface_positive,
     np.potential_mv,
     np.hydrodynamic_nm,
-    np.core_nm,
     np.zeta_potential_mv,
     np.size_in_medium_nm,
     np.surface_charge,
