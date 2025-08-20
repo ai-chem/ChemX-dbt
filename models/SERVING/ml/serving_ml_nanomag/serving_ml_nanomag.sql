@@ -22,7 +22,7 @@ with joined_data as (
         fact.coercivity_numeric,
         fact.squid_rem_mag_numeric,
         fact.exchange_bias_shift_oe_numeric,
-        fact.vertical_loop_shift_m_vsl_emu_g_numeric
+        fact.vertical_loop_shift_m_vsl_emu_g_numeric,
 
         np.core_shell_formula,
         np.emic_size,
