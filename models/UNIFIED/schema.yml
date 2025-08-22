@@ -382,7 +382,7 @@ sources:
             description: "Timestamp when the data was loaded into dbt"
       - name: eyedrops
 
-        description: "Data on the corneal permeability of small molecules used in ophthalmic drug delivery"
+        description: "Data on the corneal permeability of small_molecules used in ophthalmic drug delivery"
         columns:
           - name: smiles
             description: "SMILES of the compound. Manually drawn and curated based on compound name"
