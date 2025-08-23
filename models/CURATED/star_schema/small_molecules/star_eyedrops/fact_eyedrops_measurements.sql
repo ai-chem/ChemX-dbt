@@ -16,7 +16,6 @@ SELECT
     cur.perm_numeric,
     cur.logp_original,
     cur.logp_numeric,
-    cur.logp_cleaned,
     cur.page,
     cur.origin
 

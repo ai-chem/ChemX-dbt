@@ -21,7 +21,7 @@ SELECT
     name_cocrystal_origin,
     ratio_cocrystal,
     ratio_cocrystal_page,
-    "ratio_cocrystal_page.1", -- Оставляем как есть, но в кавычках из-за точки в имени
+    "ratio_cocrystal_page.1" AS ratio_cocrystal_page_1,
     CAST(ratio_cocrystal_origin AS INTEGER) AS ratio_cocrystal_origin, -- Преобразуем в INTEGER
     name_drug,
     name_drug_type_file,

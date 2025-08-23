@@ -32,7 +32,6 @@ SELECT
     fact.perm_numeric,
     fact.logp_original,
     fact.logp_numeric,
-    fact.logp_cleaned,
     fact.page,
     fact.origin
 

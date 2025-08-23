@@ -16,7 +16,7 @@ SELECT
     def.name_cocrystal_origin,
     def.ratio_cocrystal,
     def.ratio_cocrystal_page,
-    def."ratio_cocrystal_page.1",
+    def.ratio_cocrystal_page_1,
     def.ratio_cocrystal_origin,
     def.ratio_component_1,
     def.ratio_component_2,

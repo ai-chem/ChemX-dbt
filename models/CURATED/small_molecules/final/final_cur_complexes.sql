@@ -17,9 +17,5 @@ select
       when supplementary = 1 then true
       when supplementary = 0 then false
       else null
-    end as supplementary_bool,
-
-    -- Очистка target_original от запятых
-    {{ parse_decimal_comma_to_float('target_original') }} as target_cleaned
-
+    end as supplementary_bool
 from dedup_complexes

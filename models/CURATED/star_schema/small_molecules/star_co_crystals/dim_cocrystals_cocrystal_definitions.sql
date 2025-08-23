@@ -14,7 +14,7 @@ WITH unique_cocrystal_definitions AS (
         name_cocrystal_origin,
         ratio_cocrystal,
         ratio_cocrystal_page,
-        "ratio_cocrystal_page.1",
+        ratio_cocrystal_page_1,
         ratio_cocrystal_origin,
         ratio_component_1,
         ratio_component_2
@@ -36,7 +36,7 @@ SELECT
     name_cocrystal_origin,
     ratio_cocrystal,
     ratio_cocrystal_page,
-    "ratio_cocrystal_page.1",
+    ratio_cocrystal_page_1,
     ratio_cocrystal_origin,
     ratio_component_1,
     ratio_component_2

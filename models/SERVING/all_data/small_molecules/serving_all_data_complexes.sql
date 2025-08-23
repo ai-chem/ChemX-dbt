@@ -44,7 +44,6 @@ SELECT
     fact.compound_id,
     fact.target_numeric,
     fact.target_original,
-    fact.target_cleaned,
     fact.page_target_value,
     fact.origin_target_value
 

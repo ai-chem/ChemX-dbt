@@ -15,7 +15,6 @@ SELECT
     cur.compound_id,
     cur.target_numeric,
     cur.target_original,
-    cur.target_cleaned,
     cur.page_target_value,
     cur.origin_target_value
 

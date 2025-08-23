@@ -56,7 +56,7 @@ LEFT JOIN {{ ref('dim_cocrystals_cocrystal_definitions') }} AS dim_cocrystal_def
     AND cur.name_cocrystal_origin IS NOT DISTINCT FROM dim_cocrystal_def.name_cocrystal_origin
     AND cur.ratio_cocrystal IS NOT DISTINCT FROM dim_cocrystal_def.ratio_cocrystal
     AND cur.ratio_cocrystal_page IS NOT DISTINCT FROM dim_cocrystal_def.ratio_cocrystal_page
-    AND cur."ratio_cocrystal_page.1" IS NOT DISTINCT FROM dim_cocrystal_def."ratio_cocrystal_page.1"
+    AND cur.ratio_cocrystal_page_1 IS NOT DISTINCT FROM dim_cocrystal_def.ratio_cocrystal_page_1
     AND cur.ratio_cocrystal_origin IS NOT DISTINCT FROM dim_cocrystal_def.ratio_cocrystal_origin
     AND cur.ratio_component_1 IS NOT DISTINCT FROM dim_cocrystal_def.ratio_component_1
     AND cur.ratio_component_2 IS NOT DISTINCT FROM dim_cocrystal_def.ratio_component_2
