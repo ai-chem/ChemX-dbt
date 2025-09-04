@@ -6,7 +6,7 @@
 
 SELECT
     sn AS serial_number,
-    np AS nanoparticle,  -- 🔁 Переименование поля
+    np AS nanoparticle,  -- Переименование поля
     bacteria,
     strain,
     np_synthesis as synthesis_method,
