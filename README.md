@@ -127,3 +127,16 @@ dbt docs serve
 ---
 
 > README будет регулярно обновляться по мере роста проекта.
+
+
+
+
+### The ChemX Ecosystem
+
+This repository is the central hub for the ChemX project. The full ecosystem consists of several repositories designed to work together:
+
+*   **[ChemX](https://github.com/ai-chem/ChemX-RAG)**: Contains 10 datasets, documentation, and code for running baseline and agentic experiments for information extraction.
+*   **[ChemX-dbt](https://github.com/ai-chem/ChemX-dbt)**: Contains database models (dbt) to use ChemX datasets and build ETL pipelines.
+*   **[ChemX-backend](https://github.com/ai-chem/ChemX-backend)**: Contains backend code to serve ChemX datasets via API.
+*   **[ChemX-RAG](https://github.com/ai-chem/ChemX-dbt)**: Contains code to build Retrieval-Augmented Generation (RAG) applications using ChemX datasets.
+*   **[ChemX-client-python](https://github.com/ai-chem/ChemX-client-python)**: Contains a Python client for accessing ChemX datasets via the API.
